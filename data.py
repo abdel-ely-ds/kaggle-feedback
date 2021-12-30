@@ -12,17 +12,24 @@ TRANSFORMED_CSV_FILENAME = "one_single_train.csv"
 
 
 
-def get_raw_text(text_id: str):
-    with open(MAIN_PATH + TRAIN + f'{text_id}.txt') as f:
+def get_raw_text(main_path: str = MAIN_PATH,
+                 folder: str = TRAIN,
+                 text_id: str = "0"):
+    with open(main_path + folder + f'{text_id}.txt') as f:
         return f.read()
 
-def read_csv_file() -> pd.DataFrame:
-    return pd.read_csv(MAIN_PATH + CSV_FILENAME)
+def read_csv_file(main_path: str = MAIN_PATH,
+                  csv_filename: str = CSV_FILENAME
+                  ) -> pd.DataFrame:
+    return pd.read_csv(main_path + csv_filename)
 
-def read_transformed_csv_file() -> pd.DataFrame:
-    return pd.read_csv(MAIN_PATH + TRANSFORMED_CSV_FILENAME)
+def read_transformed_csv_file(main_path: str = MAIN_PATH,
+                              transformed_csv_filename: str = TRANSFORMED_CSV_FILENAME
+                              ) -> pd.DataFrame:
+    return pd.read_csv(main_path + transformed_csv_filename)
 
 def get_transformed_raw_dataset(train: pd.DataFrame,
+                                main_path: str = MAIN_PATH,
                                 filename: str = TRANSFORMED_CSV_FILENAME,
                                 save=False
                                 ) -> pd.DataFrame:
@@ -38,7 +45,7 @@ def get_transformed_raw_dataset(train: pd.DataFrame,
     df['text'] = df['id'].apply(get_raw_text)
 
     if save:
-        df.to_csv(MAIN_PATH + filename, index=False)
+        df.to_csv(main_path + filename, index=False)
 
     return df
 
