@@ -1,4 +1,5 @@
 from transformers import AutoModelForTokenClassification, TrainingArguments, Trainer
+from transformers import DataCollatorForTokenClassification
 
 BS = 4
 GRAD_ACC = 8
@@ -6,14 +7,6 @@ LR = 5e-5
 WD = 0.01
 WARMUP = 0.1
 N_EPOCHS = 5
-
-def create_model(model_checkpoint: str,
-                 num_labels: str
-                 ):
-    model = AutoModelForTokenClassification.from_pretrained(model_checkpoint, num_labels)
-
-    return model
-
 
 def create_training_args(
         model_name,
@@ -38,3 +31,27 @@ def create_training_args(
         gradient_accumulation_steps=gradient_accumulation_steps,
         warmup_ratio=warmup_ratio
     )
+
+def create_data_collator(tokenizer):
+    return DataCollatorForTokenClassification(tokenizer)
+
+
+def train(model,
+          args,
+          train_dataset,
+          eval_dataset,
+          data_collator,
+          tokenizer
+          ):
+
+    trainer = Trainer(
+        model,
+        args,
+        train_dataset=train_dataset,
+        eval_dataset=eval_dataset,
+        data_collator=data_collator,
+        tokenizer=tokenizer,
+    )
+    trainer.train()
+
+    return trainer
