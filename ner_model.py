@@ -28,7 +28,7 @@ def create_training_args(
         per_device_eval_batch_size=per_device_eval_batch_size,
         num_train_epochs=n_epochs,
         weight_decay=weight_decay,
-        report_to="wandb"
+        report_to="wandb",
         gradient_accumulation_steps=gradient_accumulation_steps,
         warmup_ratio=warmup_ratio
     )
