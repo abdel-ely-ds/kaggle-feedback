@@ -1,5 +1,6 @@
 import pandas as pd
 from datasets import Dataset, load_metric
+import ast
 
 MAIN_PATH = "/media/abdelelyds/Elements/Feedback/"
 TRAIN = "train/"
@@ -24,8 +25,11 @@ def read_csv_file(main_path: str = MAIN_PATH,
 def read_transformed_csv_file(main_path: str = MAIN_PATH,
                               transformed_csv_filename: str = TRANSFORMED_CSV_FILENAME
                               ) -> pd.DataFrame:
-    return pd.read_csv(main_path + transformed_csv_filename)
-
+    df = pd.read_csv(main_path + transformed_csv_filename)
+    df['starts'] = df.starts.apply(ast.literal_eval)
+    df['ends'] = df.ends.apply(ast.literal_eval)
+    df['classlist'] = df.classlist.apply(ast.literal_eval)
+    return df
 
 def get_transformed_raw_dataset(train: pd.DataFrame,
                                 main_path: str = MAIN_PATH,
