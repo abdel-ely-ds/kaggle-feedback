@@ -56,6 +56,3 @@ def train(model,
     trainer.train()
 
     return trainer
-
-def ner_predict(trainer, tokenized_data):
-    return preds, labels, _ = trainer.predict(tokenized_data)
