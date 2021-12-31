@@ -1,7 +1,5 @@
 import pandas as pd
 from datasets import Dataset, load_metric
-from typing import List
-from collections import defaultdict
 
 MAIN_PATH = "/media/abdelelyds/Elements/Feedback/"
 TRAIN = "train/"
