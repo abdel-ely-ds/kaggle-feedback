@@ -148,4 +148,3 @@ def get_truth_labels(tokenized_data, train_or_test="test") -> pd.DataFrame:
             })
 
     return pd.DataFrame(l)
-
