@@ -11,6 +11,7 @@ N_EPOCHS = 5
 
 def create_training_args(
         model_name,
+        load_best_model_at_end: bool = True,
         learning_rate: float = LR,
         per_device_train_batch_size: int = BS,
         per_device_eval_batch_size: int = BS,
@@ -31,7 +32,8 @@ def create_training_args(
         weight_decay=weight_decay,
         report_to="wandb",
         gradient_accumulation_steps=gradient_accumulation_steps,
-        warmup_ratio=warmup_ratio
+        warmup_ratio=warmup_ratio,
+        load_best_model_at_end=load_best_model_at_end
     )
 
 
