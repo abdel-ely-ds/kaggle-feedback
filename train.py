@@ -21,7 +21,7 @@ def create_training_args(
         warmup_ratio: float = WARMUP
 ):
     return TrainingArguments(
-        model_name,
+        run_name=model_name,
         evaluation_strategy="epoch",
         logging_strategy="epoch",
         save_strategy="epoch",
@@ -33,7 +33,7 @@ def create_training_args(
         report_to="wandb",
         gradient_accumulation_steps=gradient_accumulation_steps,
         warmup_ratio=warmup_ratio,
-        load_best_model_at_end=load_best_model_at_end
+        load_best_model_at_end=load_best_model_at_end,
     )
 
 
