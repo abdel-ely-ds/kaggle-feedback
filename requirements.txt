@@ -2,3 +2,6 @@ datasets==1.17.0
 googletrans==3.0.0
 pandas==1.3.4
 transformers==4.15.0
+spacy
+torch
+torchcrf

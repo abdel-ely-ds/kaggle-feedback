@@ -31,15 +31,20 @@ def read_transformed_csv_file(main_path: str = MAIN_PATH,
     df['classlist'] = df.classlist.apply(ast.literal_eval)
     return df
 
+
 def get_transformed_raw_dataset(train: pd.DataFrame,
                                 main_path: str = MAIN_PATH,
                                 filename: str = TRANSFORMED_CSV_FILENAME,
+                                class_type: str = 'discourse_type',
+                                start: str = 'discourse_start',
+                                end: str = 'discourse_end',
+                                predstring: str = 'predictionstring',
                                 save=False
                                 ) -> pd.DataFrame:
-    df1 = train.groupby('id')['discourse_type'].apply(list).reset_index(name='classlist')
-    df2 = train.groupby('id')['discourse_start'].apply(list).reset_index(name='starts')
-    df3 = train.groupby('id')['discourse_end'].apply(list).reset_index(name='ends')
-    df4 = train.groupby('id')['predictionstring'].apply(list).reset_index(name='predictionstrings')
+    df1 = train.groupby('id')[class_type].apply(list).reset_index(name='classlist')
+    df2 = train.groupby('id')[start].apply(list).reset_index(name='starts')
+    df3 = train.groupby('id')[end].apply(list).reset_index(name='ends')
+    df4 = train.groupby('id')[predstring].apply(list).reset_index(name='predictionstrings')
 
     df = pd.merge(df1, df2, how='inner', on='id')
     df = pd.merge(df, df3, how='inner', on='id')
