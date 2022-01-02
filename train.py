@@ -41,14 +41,14 @@ def create_data_collator(tokenizer):
     return DataCollatorForTokenClassification(tokenizer)
 
 
-def train(model,
-          args,
-          train_dataset,
-          eval_dataset,
-          data_collator,
-          tokenizer,
-          compute_metrics=None,
-          ):
+def create_trainer(model,
+                   args,
+                   train_dataset,
+                   eval_dataset,
+                   data_collator,
+                   tokenizer,
+                   compute_metrics=None,
+                   ):
     trainer = Trainer(
         model,
         args,
@@ -58,6 +58,4 @@ def train(model,
         tokenizer=tokenizer,
         compute_metrics=compute_metrics
     )
-    trainer.train()
-
     return trainer
