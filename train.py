@@ -43,11 +43,11 @@ def create_data_collator(tokenizer):
 
 
 def create_trainer(model,
-                   args,
-                   train_dataset,
-                   eval_dataset,
-                   data_collator,
-                   tokenizer,
+                   args=None,
+                   train_dataset=None,
+                   eval_dataset=None,
+                   data_collator=None,
+                   tokenizer=None,
                    compute_metrics=None,
                    ):
     trainer = Trainer(
