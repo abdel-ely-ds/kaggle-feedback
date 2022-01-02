@@ -1,23 +1,23 @@
-from transformers import AutoModel
+from transformers import LongformerModel, LongformerPreTrainedModel
 from transformers.modeling_outputs import TokenClassifierOutput
 from torch import nn
 from torch.nn import CrossEntropyLoss
 import torch
-
 from torchcrf import CRF
 
 
-class FeedbackModel(nn.Module):
+class FeedbackModel(LongformerPreTrainedModel):
     _keys_to_ignore_on_load_missing = [r"position_ids"]
 
-    def __init__(self, pretrained_model_name, num_labels):
-        super().__init__()
-        self.num_labels = num_labels
-        self.pretrained_model_name = pretrained_model_name
+    def __init__(self, config):
+        super().__init__(config)
+        self.num_labels = config.num_labels
 
-        self.base = AutoModel.from_pretrained(self.pretrained_model_name, add_pooling_layer=False)
+        self.base = LongformerModel.from_pretrained(config, add_pooling_layer=False)
         self.dropout = nn.Dropout(0.3)
-        self.classifier = nn.Linear(768, self.num_labels)
+        self.classifier = nn.Linear(config.hidden_size, config.num_labels)
+
+        self.init_weights()
 
     def forward(
             self,
@@ -82,20 +82,20 @@ class FeedbackModel(nn.Module):
         )
 
 
-class FeedbackLstmCRFModel(nn.Module):
+class FeedbackLstmCRFModel(LongformerPreTrainedModel):
     _keys_to_ignore_on_load_missing = [r"position_ids"]
 
-    def __init__(self, pretrained_model_name, num_labels):
-        super().__init__()
-        self.num_labels = num_labels
-        self.pretrained_model_name = pretrained_model_name
+    def __init__(self, config):
+        super().__init__(config)
+        self.num_labels = config.num_labels
 
-        self.base = AutoModel.from_pretrained(self.pretrained_model_name, add_pooling_layer=False)
-        self.dropout = nn.Dropout(0.3)
-        self.bilstm = nn.LSTM(768, 768 // 2, dropout=config.dropout, batch_first=True,
+        self.base = LongformerModel.from_pretrained(config, add_pooling_layer=False)
+        self.dropout = nn.Dropout(config.hidden_dropout_prob)
+        self.bilstm = nn.LSTM(config.hidden_size, (config.hidden_size) // 2, dropout=config.dropout, batch_first=True,
                               bidirectional=True)
-        self.classifier = nn.Linear(768, self.num_labels)
-        self.crf = CRF(num_tags=self.num_labels, batch_first=True)
+        self.classifier = nn.Linear(config.hidden_size, config.num_labels)
+        self.crf = CRF(num_tags=config.num_labels, batch_first=True)
+        self.init_weights()
 
     def forward(
             self,
@@ -149,18 +149,18 @@ class FeedbackLstmCRFModel(nn.Module):
         return loss, tags
 
 
-class FeedbackCRFModel(nn.Module):
+class FeedbackCRFModel(LongformerPreTrainedModel):
     _keys_to_ignore_on_load_missing = [r"position_ids"]
 
-    def __init__(self, pretrained_model_name, num_labels):
-        super().__init__()
-        self.num_labels = num_labels
-        self.pretrained_model_name = pretrained_model_name
+    def __init__(self, config):
+        super().__init__(config)
+        self.num_labels = config.num_labels
 
-        self.base = AutoModel.from_pretrained(self.pretrained_model_name, add_pooling_layer=False)
-        self.dropout = nn.Dropout(0.3)
-        self.classifier = nn.Linear(768, self.num_labels)
-        self.crf = CRF(num_tags=self.num_labels, batch_first=True)
+        self.base = LongformerModel.from_pretrained(config, add_pooling_layer=False)
+        self.dropout = nn.Dropout(config.hidden_dropout_prob)
+        self.classifier = nn.Linear(config.hidden_size, config.num_labels)
+        self.crf = CRF(num_tags=config.num_labels, batch_first=True)
+        self.init_weights()
 
     def forward(
             self,
