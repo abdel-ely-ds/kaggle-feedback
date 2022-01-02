@@ -21,6 +21,7 @@ def create_training_args(
         warmup_ratio: float = WARMUP
 ):
     return TrainingArguments(
+        model_name,
         run_name=model_name,
         evaluation_strategy="epoch",
         logging_strategy="epoch",
