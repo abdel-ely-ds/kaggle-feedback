@@ -46,7 +46,8 @@ def train(model,
           train_dataset,
           eval_dataset,
           data_collator,
-          tokenizer
+          tokenizer,
+          compute_metrics=None,
           ):
     trainer = Trainer(
         model,
@@ -55,6 +56,7 @@ def train(model,
         eval_dataset=eval_dataset,
         data_collator=data_collator,
         tokenizer=tokenizer,
+        compute_metrics=compute_metrics
     )
     trainer.train()
 
