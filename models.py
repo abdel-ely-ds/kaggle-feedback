@@ -14,7 +14,7 @@ class BertForTokenClassification(BertPreTrainedModel):
         self.num_labels = config.num_labels
 
         self.bert = BertModel(config, add_pooling_layer=False)
-        self.dropout = nn.Dropout(config.hidden_dropout_prob)
+        self.dropout = nn.Dropout(0.3)
         self.classifier = nn.Linear(config.hidden_size, config.num_labels)
 
         self.init_weights()
