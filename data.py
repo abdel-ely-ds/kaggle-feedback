@@ -1,5 +1,5 @@
 import pandas as pd
-from datasets import Dataset, load_metric
+from datasets import Dataset
 import ast
 
 MAIN_PATH = "/media/abdelelyds/Elements/Feedback/"

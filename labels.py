@@ -3,15 +3,16 @@ from collections import defaultdict
 import pandas as pd
 
 CLASSES = ['Lead',
- 'Position',
- 'Evidence',
- 'Claim',
- 'Concluding Statement',
- 'Counterclaim',
- 'Rebuttal']
+           'Position',
+           'Evidence',
+           'Claim',
+           'Concluding Statement',
+           'Counterclaim',
+           'Rebuttal']
 
 MAX_LEN = 1024
 STRIDE = 128
+
 
 def label2index(classes: List[str] = CLASSES) -> dict:
     tags = defaultdict()
@@ -26,8 +27,8 @@ def label2index(classes: List[str] = CLASSES) -> dict:
 
     return l2i
 
-def index2label(l2i: dict) ->dict:
 
+def index2label(l2i: dict) -> dict:
     i2l = defaultdict()
     for k, v in l2i.items():
         i2l[v] = k
@@ -38,12 +39,12 @@ def index2label(l2i: dict) ->dict:
 
 
 def fix_beginnings(labels):
-    for i in range(1,len(labels)):
+    for i in range(1, len(labels)):
         curr_lab = labels[i]
-        prev_lab = labels[i-1]
-        if curr_lab in range(7,14):
+        prev_lab = labels[i - 1]
+        if curr_lab in range(7, 14):
             if prev_lab != curr_lab and prev_lab != curr_lab - 7:
-                labels[i] = curr_lab -7
+                labels[i] = curr_lab - 7
     return labels
 
 
@@ -134,7 +135,6 @@ def tokenize_for_validation(examples,
         o["labels"].append(labels)
 
     return o
-
 
 
 def get_truth_labels(tokenized_data, train_or_test="test") -> pd.DataFrame:
